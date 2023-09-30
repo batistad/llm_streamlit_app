@@ -9,6 +9,7 @@ import random
 
 GPT_MODEL = "gpt-4"
 OPENAI_API_KEY = st.secrets['OPENAI_API_KEY']
+NEWS_API_KEY = st.secrets['NEWS_API_KEY']
 
 st.title('Ridicularizando as Manchetes 📰')
 
@@ -22,7 +23,8 @@ def generate_response(input_text):
     return chat(messages)
 
 def get_quote():
-    res = requests.get(url='https://newsapi.org/v2/top-headlines?country=pt&apiKey=b9be9dbbf470423285ec760333432d4c')
+    headers = {'X-Api-Key': NEWS_API_KEY}
+    res = requests.get(url='https://newsapi.org/v2/top-headlines?country=pt', headers=headers)
     res = res.json()
     article = random.choice(res['articles'])
     return article['title'], article['source']['name']
